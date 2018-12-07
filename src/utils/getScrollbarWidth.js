@@ -1,7 +1,11 @@
 import css from 'dom-css';
-let scrollbarWidth
+let scrollbarWidth = false;
 
-export default function getScrollbarWidth() {
+export default function getScrollbarWidth(forceRecalculation = false) {
+    if (scrollbarWidth !== false && !forceRecalculation) {
+        return scrollbarWidth;
+    }
+
     /* istanbul ignore else */
     if (typeof document !== 'undefined') {
         const div = document.createElement('div');
@@ -14,7 +18,7 @@ export default function getScrollbarWidth() {
             MsOverflowStyle: 'scrollbar'
         });
         document.body.appendChild(div);
-        scrollbarWidth = (div.offsetWidth - div.clientWidth) || 15;
+        scrollbarWidth = (div.offsetWidth - div.clientWidth);
         document.body.removeChild(div);
     } else {
         scrollbarWidth = 0;
